@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework.routers import SimpleRouter
 
-from meter.views import DeviceViewSet
+from apps.meter.views import DeviceViewSet
 
 router = SimpleRouter()
 

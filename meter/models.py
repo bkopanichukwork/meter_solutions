@@ -12,7 +12,7 @@ class Device(models.Model):
     )
 
     name = models.CharField(max_length=255)
-    ##owner = models.ForeignKey(on_delete=models.CASCADE)
+    ###owner = models.ForeignKey(on_delete=models.CASCADE)
     status = models.PositiveSmallIntegerField(choices=DEVICE_STATUS, default=DEVICE_UNDEFINED)
     #device_model = models.ForeignKey(on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now_add=True)

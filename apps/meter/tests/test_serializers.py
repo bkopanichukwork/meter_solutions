@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from apps.meter.models import Device
-from apps.meter.serializers import DeviceSerializer
+from apps.meter.models.device import Device
+from apps.meter.api.serializers import DeviceSerializer
 
 
 class MeterSerializerTestCase(TestCase):

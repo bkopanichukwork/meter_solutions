@@ -2,8 +2,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from apps.meter.models import Meter
-from apps.meter.serializers import MeterSerializer
+from apps.meter.models.device import Meter
+from apps.meter.api.serializers import MeterSerializer
 
 
 class MeterApiTestCase(APITestCase):

@@ -1,22 +1,24 @@
 import json
-
-HANDLERS = {
-    'zmai90': 'Zmai90DataHandler',
-    'device2': 'Device2Handler',
-    'device3': 'Device3Handler',
-    'device4': 'Device4Handler',
-    'device5': 'Device5Handler',
-}
-
-class Handler():
-
-    def handle(self, topic, message):
-        handler = getattr(HANDLERS, topic.split('_')[0])
-        return handler()
+from abc import abstractmethod
 
 
-class Zmai90DataHandler():
-    def handle(self, topic, message):
+class BaseDataHandler:
+
+    @abstractmethod
+    def decode_to_json(self, message):
+        pass
+
+    @abstractmethod
+    def save_to_database(self, decoded):
+        pass
+
+
+class Zmai90DataHandler(BaseDataHandler):
+
+    def save_to_database(self, decoded):
+        pass
+
+    def _decode_to_json(self, topic, message):
         topic_params = topic.split('/')
         device_model = topic_params[0].split('_')[0]
         device_id = topic_params[0].split('_')[1]
@@ -39,7 +41,9 @@ class Zmai90DataHandler():
         elif (topic_params[1] == "stat"):
             pass
 
-    def __decode_param(self, payload, demension):
+        return self.__decode(message)
+
+    def __decode_param(self, payload, dimension):
         payload_len = len(payload)
         result = 0
 
@@ -49,9 +53,9 @@ class Zmai90DataHandler():
                 if plyload_range:
                     result = str(result) + plyload_range
 
-        return float(result) / demension
+        return float(result) / dimension
 
-    def __decode(self, message) -> str:
+    def decode_to_json(self, message) -> str:
         # Decodes message from device to json
         result = {
             'consumedEnergy': self.__decode_param(message[6:14], 100),

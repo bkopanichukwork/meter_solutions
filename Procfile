@@ -1,1 +1,1 @@
-web: gunicorn meter_solutions.meter_solutions.wsgi
+web: cd meter_solutions && gunicorn meter_solutions.wsgi

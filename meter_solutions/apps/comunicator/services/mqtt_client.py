@@ -1,6 +1,6 @@
 from paho.mqtt import client as mqtt_client
 
-from handlers import settings, handlers
+from apps.comunicator.services.handlers import settings, handlers
 
 
 class MqttClient:

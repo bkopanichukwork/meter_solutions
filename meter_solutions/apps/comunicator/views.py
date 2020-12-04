@@ -1,23 +1,16 @@
 from django.shortcuts import redirect
 
 # Create your views here.
-from apps.comunicator.services import handlers
-from apps.comunicator.services.mqtt_client import MqttClient
+from apps.comunicator.services.backend import handlers
+from apps.comunicator.services.backend.mqtt_client import MqttClient
+from apps.comunicator.services.toggle import turn_off, turn_on
 
 
-def turn_off(request, meter_id):
-    client = MqttClient()
-    DeviceManager = handlers.get_device_manager("zmai90")
-    manager = DeviceManager(client)
-    manager.turn_off(meter_id)
-    client.connector.disconnect()
+def turn_off_view(request, device_id):
+    turn_off(device_id)
     return redirect('/')
 
 
-def turn_on(request, meter_id):
-    client = MqttClient()
-    DeviceManager = handlers.get_device_manager("zmai90")
-    manager = DeviceManager(client)
-    manager.turn_on(meter_id)
-    client.connector.disconnect()
+def turn_on_view(request, device_id):
+    turn_on(device_id)
     return redirect('/')

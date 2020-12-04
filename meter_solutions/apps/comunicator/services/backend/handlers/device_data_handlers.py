@@ -1,6 +1,8 @@
 import json
 from abc import abstractmethod
 
+from loguru import logger
+
 
 class BaseDataHandler:
 
@@ -68,3 +70,23 @@ class Zmai90DataHandler(BaseDataHandler):
             'powerFactor': self.__decode_param(message[62:70], 10)
         }
         return json.dumps(result)
+
+    @staticmethod
+    def on_message(client, userdata, message):
+
+        logger.info(f"Received {message}")
+        logger.info(f"Message topic - {message.topic}")
+        logger.info(f"Message payload - {message.payload}")
+
+        msg = message.payload.decode("utf-8")
+        msg = json.loads(msg)
+        indications_encoded = msg['SerialReceived']
+
+        handler = Zmai90DataHandler()
+        indications_decoded = handler.decode_to_json(indications_encoded)
+
+        logger.success(indications_decoded)
+
+        handler.save_to_database(indications_decoded)
+
+

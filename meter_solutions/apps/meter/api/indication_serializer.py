@@ -6,4 +6,4 @@ from apps.meter.models.indication import Indication
 class IndicationSerializer(ModelSerializer):
     class Meta:
         model = Indication
-        fields = '__all__'
+        fields = ['measurement', 'designation', ]

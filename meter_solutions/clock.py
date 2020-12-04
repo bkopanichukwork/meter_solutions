@@ -1,6 +1,6 @@
-from apps.comunicator.services.receiver import receive
+from apps.comunicator.services.receiver import init_receiver
 
-receive()
+init_receiver()
 
 while True:
     pass

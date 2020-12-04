@@ -1,7 +1,9 @@
 import json
+import os
 from abc import abstractmethod
 
 from loguru import logger
+from sqlalchemy import create_engine, Table, select
 
 
 class BaseDataHandler:
@@ -17,8 +19,19 @@ class BaseDataHandler:
 
 class Zmai90DataHandler(BaseDataHandler):
 
+    def __init__(self):
+        logger.info("db_engine for Zmai90DataHandler created")
+        self.db_engine = create_engine(os.getenv("DATABASE_URL"))
+
     def save_to_database(self, decoded):
-        pass
+        logger.info("Zmai90DataHandler save_to_database invoked")
+        with self.db_engine.conncection() as con:
+            logger.info("Database connection established.")
+            indications = Table('meter_indication')
+            stm = select([indications])
+            rs = con.execute(stm)
+
+            logger.info(rs.fetchall)
 
     def _decode_to_json(self, topic, message):
         topic_params = topic.split('/')
@@ -88,5 +101,3 @@ class Zmai90DataHandler(BaseDataHandler):
         logger.success(indications_decoded)
 
         handler.save_to_database(indications_decoded)
-
-

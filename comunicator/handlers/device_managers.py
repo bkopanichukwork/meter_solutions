@@ -25,11 +25,11 @@ class Zmai90DeviceManager(BaseDeviceManager):
 
     def turn_on(self, device_id):
         topic = device_id + Zmai90DeviceManager.power_topic
-        self.mqtt_client.publish(topic, "ON")
+        self.mqtt_client.connector.publish(topic, "ON")
 
     def turn_off(self, device_id):
         topic = device_id + Zmai90DeviceManager.power_topic
-        self.mqtt_client.publish(topic, "OFF")
+        self.mqtt_client.connector.publish(topic, "OFF")
 
     def send_message(self, device_id, topic, message):
         topic = device_id + topic

@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from apps.meter.models.device import Meter
-from apps.meter.api.serializers import MeterSerializer
+from apps.meter.api.data_serializer import MeterSerializer
 
 
 class MeterApiTestCase(APITestCase):

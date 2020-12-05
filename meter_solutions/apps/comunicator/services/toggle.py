@@ -1,4 +1,4 @@
-from apps.comunicator.services.backend.handlers import handlers
+from apps.comunicator.services.backend.device_handlers import handlers
 from apps.comunicator.services.backend.mqtt_client import MqttClient
 
 

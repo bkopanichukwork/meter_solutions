@@ -1,6 +1,3 @@
-from apps.comunicator.services.receiver import init_receiver
+from apps.comunicator.services.receiver import background_receive
 
-init_receiver()
-
-while True:
-    pass
+background_receive()

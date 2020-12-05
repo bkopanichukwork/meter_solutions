@@ -1,7 +1,7 @@
 from loguru import logger
 from paho.mqtt import client as mqtt_client
 
-from apps.comunicator.services.backend.handlers import settings
+from apps.comunicator.services.backend.device_handlers import settings
 
 
 class MqttClient:
@@ -11,10 +11,10 @@ class MqttClient:
 
     def __init__(self):
         # Set Connecting Client ID
-        self.connector = mqtt_client.Client(client_id=settings.CLIENT_ID, clean_session=False, userdata=None)
-        self.connector.on_connect = MqttClient.__on_connect
-        self.connector.max_inflight_messages_set(settings.MAX_INFLIGHT_MESSAGES)
-        self.connector.connect(settings.BROKER, settings.PORT)
+        self._connector = mqtt_client.Client(client_id=settings.CLIENT_ID, clean_session=False, userdata=None)
+        self._connector.on_connect = MqttClient.__on_connect
+        self._connector.max_inflight_messages_set(settings.MAX_INFLIGHT_MESSAGES)
+        self._connector.connect(settings.BROKER, settings.PORT)
 
     @staticmethod
     def __on_connect(client_id, userdata, flags, rc):
@@ -29,12 +29,15 @@ class MqttClient:
 
     def subscribe(self, topic, on_message=None):
         logger.info(f"Subscribed to {topic} topic with {on_message} reaction")
-        self.connector.subscribe(topic)
+        self._connector.subscribe(topic)
 
         if not on_message:
             on_message = MqttClient.__on_message
 
-        self.connector.on_message = on_message
+        self._connector.on_message = on_message
 
     def disconnect(self):
-        self.connector.disconnect()
+        self._connector.disconnect()
+
+    def start_loop(self):
+        self._connector.loop_start()

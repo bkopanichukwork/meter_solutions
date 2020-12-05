@@ -13,6 +13,6 @@ class Data(models.Model):
     """
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
     indication = models.ForeignKey(Indication, on_delete=models.CASCADE)
-    timestamp = models.DateField(auto_now=True)
+    timestamp = models.DateTimeField(auto_now=True)
     value = models.DecimalField(max_digits=16, decimal_places=4)
 

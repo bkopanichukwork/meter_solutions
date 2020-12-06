@@ -2,14 +2,19 @@
     meter_solutions URL Configuration
 """
 from django.contrib import admin
-from django.urls import path, include
-from .yasg import urlpatterns as doc_urls
+from django.urls import path, include, re_path
+from rest_framework.authtoken import views
 
+from .yasg import urlpatterns as doc_urls
+from apps.authentication.views import RegistrationAPIView, LoginAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('apps.meter.urls')),
     path('communicator/', include('apps.communicator.urls')),
+    path('api-token-auth/', views.obtain_auth_token, name="api-token-auth"),
+    re_path(r'^registration/?$', RegistrationAPIView.as_view(), name='user_registration'),
+    re_path(r'^login/?$', LoginAPIView.as_view(), name='user_login'),
 ]
 
 urlpatterns += doc_urls

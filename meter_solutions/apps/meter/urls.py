@@ -3,6 +3,7 @@ from rest_framework.routers import SimpleRouter
 from apps.meter.views import DeviceViewSet, DeviceModelViewSet, \
     DeviceTypeViewSet, DataViewSet, IndicationViewSet, DeviceGroupViewSet
 
+
 router = SimpleRouter()
 
 router.register(r'device', DeviceViewSet)

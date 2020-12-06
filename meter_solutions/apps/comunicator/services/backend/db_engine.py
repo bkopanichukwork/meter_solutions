@@ -1,4 +1,3 @@
-import contextlib
 import json
 import os
 from datetime import datetime
@@ -6,10 +5,22 @@ from datetime import datetime
 from loguru import logger
 from sqlalchemy import create_engine, Table, MetaData, select
 
-from apps.comunicator.services.backend.device_handlers import settings
+from apps.comunicator.services.backend import settings
 
 
 def save_data(device_id, indications_db, json_indications, data_table):
+    """
+        Saves all data from the device to the database.
+        #TODO make adding by one insert query, instead of each dataframe splitted
+
+        Parameter device_id - id of the device in the database
+        Parameter indications_db - indications_db list of tuples (result of db query),
+            each tuple contains id, measurement, designation of an indication that was sent by device
+        Parameter json_indications - indications of the device as json
+        Parameter data_table - Table for sqlalchemy to which function saves data
+        Returns - none #TODO return status of the operation
+
+    """
     logger.info("Preapring query with data:")
     logger.info(f"device_id - {device_id}")
     logger.info(f"indications_db - {indications_db}")
@@ -28,7 +39,18 @@ def save_data(device_id, indications_db, json_indications, data_table):
         insert_q.execute()
 
 
-def json_to_database(json_indications, device_id):
+def json_to_database(json_indications, device_mqtt_id):
+    """
+        This function creates connection to the database
+        finds ids of indications by their measurement,
+        id of the device by its mqtt_id,
+        and after that runs save_data function.
+        #TODO - split to smaller functions
+
+            Parameter json_indications - indications of a device as a json string
+            Parameter device_id - id of the device which sent this indications
+            Returns - none #TODO return status of the operation
+    """
     if not settings.DATABASE_URL:
         settings.DATABASE_URL = os.getenv("DATABASE_URL")
 
@@ -48,10 +70,8 @@ def json_to_database(json_indications, device_id):
         data = Table(settings.DATA_TABLE, meta, autoload=True)
         devices = Table(settings.DEVICES_TABLE, meta, autoload=True)
 
-        devices = Table(settings.DEVICES_TABLE, meta, autoload=True)
-
         device_id_query = select([devices.c.id]). \
-            where(devices.c.mqtt_id == device_id).limit(1)
+            where(devices.c.mqtt_id == device_mqtt_id).limit(1)
         device_id_result = list(con.execute(device_id_query))
 
         logger.info(device_id_result)
@@ -65,5 +85,3 @@ def json_to_database(json_indications, device_id):
         logger.info(indications_result)
 
         save_data(device_id_result[0][0], indications_result, json_indications, data)
-
-        con.close()

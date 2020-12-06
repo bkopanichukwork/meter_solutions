@@ -1,7 +1,7 @@
 from loguru import logger
 from paho.mqtt import client as mqtt_client
 
-from apps.comunicator.services.backend.device_handlers import settings
+from apps.comunicator.services.backend import settings
 
 
 class MqttClient:
@@ -41,3 +41,6 @@ class MqttClient:
 
     def start_loop(self):
         self._connector.loop_start()
+
+    def publish(self, topic, message):
+        self._connector.publish(topic, message)

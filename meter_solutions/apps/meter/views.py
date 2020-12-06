@@ -27,7 +27,21 @@ class DeviceViewSet(ModelViewSet):
         result = []
         for indication in indications:
             last_data = Data.objects.filter(device=device).filter(indication=indication).last()
-            result.append({'timestamp': str(last_data.timestamp).split(".")[0], 'value': str(last_data.value), 'measurement': str(last_data.indication.measurement), 'designation': str(last_data.indication.designation)})
+            result.append({'timestamp': str(last_data.timestamp).split(".")[0], 'value': str(last_data.value),
+                           'measurement': str(last_data.indication.measurement),
+                           'designation': str(last_data.indication.designation)})
+        return Response(result)
+
+    @action(detail=True, methods=['get'])
+    def get_data_by_date(self, request, pk=None):
+        device = Device.objects.filter(id=pk).last()
+        indication = Indication.objects.filter(measurement=request.GET['measurement']).last()
+        result = []
+        start_date = request.GET['start-date'].replace('T', ' ')
+        end_date = request.GET['end-date'].replace('T', ' ')
+        last_data = Data.objects.filter(device=device).filter(indication=indication).filter(timestamp__gte=start_date).filter(timestamp__lte=end_date)
+        for data in last_data:
+            result.append({'timestamp': str(data.timestamp).split(".")[0], 'value': str(data.value)})
         return Response(result)
 
 

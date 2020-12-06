@@ -1,5 +1,11 @@
 import json
+import os
 from abc import abstractmethod
+
+from loguru import logger
+from sqlalchemy import create_engine, Table, select, MetaData
+
+from apps.communicator.services.backend.db_engine import json_to_database
 
 
 class BaseDataHandler:
@@ -8,15 +14,8 @@ class BaseDataHandler:
     def decode_to_json(self, message):
         pass
 
-    @abstractmethod
-    def save_to_database(self, decoded):
-        pass
-
 
 class Zmai90DataHandler(BaseDataHandler):
-
-    def save_to_database(self, decoded):
-        pass
 
     def _decode_to_json(self, topic, message):
         topic_params = topic.split('/')
@@ -68,3 +67,21 @@ class Zmai90DataHandler(BaseDataHandler):
             'powerFactor': self.__decode_param(message[62:70], 10)
         }
         return json.dumps(result)
+
+    @staticmethod
+    def on_message(client, userdata, message):
+
+        logger.info(f"Received {message}")
+        logger.info(f"Message topic - {message.topic}")
+        logger.info(f"Message payload - {message.payload}")
+
+        msg = message.payload.decode("utf-8")
+        msg = json.loads(msg)
+        indications_encoded = msg['SerialReceived']
+
+        handler = Zmai90DataHandler()
+        indications_decoded = handler.decode_to_json(indications_encoded)
+
+        logger.success(indications_decoded)
+
+        json_to_database(indications_decoded, "GJVSD123HDS32")

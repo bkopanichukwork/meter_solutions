@@ -17,7 +17,7 @@ def toggle(device_id: str, turn_on: bool):
     manager = get_device_manager_by_id(device_id, client)
 
     if turn_on:
-        manager.turn_off(device_id)
+        manager.turn_on(device_id)
     else:
         manager.turn_off(device_id)
 

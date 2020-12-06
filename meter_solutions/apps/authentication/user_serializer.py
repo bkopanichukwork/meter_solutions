@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
@@ -27,6 +28,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         fields = ('email', 'username', 'password', 'token',)
 
     def create(self, validated_data):
+        print(validated_data)
         return User.objects.create_user(**validated_data)
 
 class LoginSerializer(serializers.Serializer):

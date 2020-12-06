@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from meter.logic import operations
+from apps.meter import operations
 
 
 class LogicTestCase(TestCase):

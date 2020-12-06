@@ -1,9 +1,9 @@
 from rest_framework.serializers import ModelSerializer
 
-from meter.models import Device
+from apps.meter.models.data import Data
 
 
-class DeviceSerializer(ModelSerializer):
+class DataSerializer(ModelSerializer):
     class Meta:
-        model = Device
+        model = Data
         fields = '__all__'

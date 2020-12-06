@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
-from meter.models import Device
+from apps.meter.models.device import Device
 
 
 @admin.register(Device)

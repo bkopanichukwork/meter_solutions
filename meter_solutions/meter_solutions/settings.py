@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 
 import dj_database_url
+
 import django_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
 
     'drf_yasg',
     'corsheaders',
+    'django_filters',
+
 
     'apps.meter',
     'apps.authentication',
@@ -83,7 +86,8 @@ WSGI_APPLICATION = 'meter_solutions.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {'default': dj_database_url.config(conn_max_age=600)}
+
+DATABASES = {'default': dj_database_url.config()}
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 
 

@@ -27,7 +27,7 @@ class DeviceViewSet(ModelViewSet):
         result = []
         for indication in indications:
             last_data = Data.objects.filter(device=device).filter(indication=indication).last()
-            result.append({'timestamp': str(last_data.timestamp), 'value': str(last_data.value), 'measurement': str(last_data.indication.measurement), 'designation': str(last_data.indication.measurement)})
+            result.append({'timestamp': str(last_data.timestamp), 'value': str(last_data.value), 'measurement': str(last_data.indication.measurement), 'designation': str(last_data.indication.designation)})
         return Response(result)
 
 

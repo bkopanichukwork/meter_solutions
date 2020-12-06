@@ -9,7 +9,7 @@ from .yasg import urlpatterns as doc_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('apps.meter.urls')),
-    path('comunicator/', include('apps.comunicator.urls')),
+    path('communicator/', include('apps.communicator.urls')),
 ]
 
 urlpatterns += doc_urls

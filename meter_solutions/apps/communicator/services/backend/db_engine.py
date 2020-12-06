@@ -5,13 +5,12 @@ from datetime import datetime
 from loguru import logger
 from sqlalchemy import create_engine, Table, MetaData, select
 
-from apps.comunicator.services.backend import settings
+from apps.communicator.services.backend import settings
 
 
 def save_data(device_id, indications_db, json_indications, data_table):
     """
         Saves all data from the device to the database.
-        #TODO make adding by one insert query, instead of each dataframe splitted
 
         Parameter device_id - id of the device in the database
         Parameter indications_db - indications_db list of tuples (result of db query),
@@ -26,16 +25,21 @@ def save_data(device_id, indications_db, json_indications, data_table):
     logger.info(f"indications_db - {indications_db}")
     logger.info(f"json_indications - {json_indications}")
 
-    for key, value in json_indications.items():
+    prepared_data = list()
+    for indication_measurement, indication_value in json_indications.items():
 
         for indication_row in indications_db:
-            if indication_row[1] == key:
+            if indication_row[1] == indication_measurement:
                 indication_id = indication_row[0]
 
-        insert_q = data_table.insert().values(device_id=device_id,
-                                              indication_id=indication_id,
-                                              timestamp=datetime.now(),
-                                              value=value)
+        prepared_data.append({
+                              "device_id": device_id,
+                              "indication_id": indication_id,
+                              "timestamp": datetime.now(),
+                              "value": indication_value,
+                              })
+
+        insert_q = data_table.insert().values(prepared_data)
         insert_q.execute()
 
 
@@ -74,7 +78,7 @@ def json_to_database(json_indications, device_mqtt_id):
             where(devices.c.mqtt_id == device_mqtt_id).limit(1)
         device_id_result = list(con.execute(device_id_query))
 
-        logger.info(device_id_result)
+        logger.info(f"Found device id in table {settings.DATA_TABLE} - {device_id_result}")
 
         indications_query = select([indications.c.id,
                                     indications.c.measurement,
@@ -82,6 +86,10 @@ def json_to_database(json_indications, device_mqtt_id):
             where(indications.c.measurement.in_(indication_names))
 
         indications_result = list(con.execute(indications_query))
-        logger.info(indications_result)
+        logger.info(f"Found info about indications in table {settings.INDICATION_TABLE} - {indications_result}")
 
         save_data(device_id_result[0][0], indications_result, json_indications, data)
+
+    db_engine.dispose()
+    logger.info("Database connection closed.")
+

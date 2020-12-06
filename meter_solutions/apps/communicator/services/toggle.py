@@ -1,5 +1,5 @@
-from apps.comunicator.services.backend.device_handlers import handlers
-from apps.comunicator.services.backend.mqtt_client import MqttClient
+from apps.communicator.services.backend.device_handlers import handlers
+from apps.communicator.services.backend.mqtt_client import MqttClient
 
 
 def get_device_model_by_id(device_id):

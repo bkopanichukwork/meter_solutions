@@ -5,7 +5,7 @@ from abc import abstractmethod
 from loguru import logger
 from sqlalchemy import create_engine, Table, select, MetaData
 
-from apps.comunicator.services.backend.db_engine import json_to_database
+from apps.communicator.services.backend.db_engine import json_to_database
 
 
 class BaseDataHandler:

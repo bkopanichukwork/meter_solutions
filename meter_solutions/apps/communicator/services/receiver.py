@@ -3,8 +3,8 @@
     and receives data from subscribed devices.
 """
 
-from apps.comunicator.services.backend.device_handlers import handlers
-from apps.comunicator.services.backend.mqtt_client import MqttClient
+from apps.communicator.services.backend.device_handlers import handlers
+from apps.communicator.services.backend.mqtt_client import MqttClient
 
 
 def init_receiver():

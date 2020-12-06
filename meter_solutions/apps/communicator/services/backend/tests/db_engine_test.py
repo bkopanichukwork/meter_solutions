@@ -4,7 +4,7 @@ from unittest import mock
 
 from loguru import logger
 
-from apps.comunicator.services.backend.db_engine import save_to_database
+from apps.communicator.services.backend.db_engine import save_to_database
 
 
 class DBEngineTest(unittest.TestCase):

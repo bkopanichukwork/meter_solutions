@@ -1,7 +1,7 @@
 from loguru import logger
 from paho.mqtt import client as mqtt_client
 
-from apps.comunicator.services.backend import settings
+from apps.communicator.services.backend import settings
 
 
 class MqttClient:

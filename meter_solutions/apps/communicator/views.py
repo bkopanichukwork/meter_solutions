@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 
-from apps.comunicator.services.toggle import turn_off, turn_on
+from apps.communicator.services.toggle import turn_off, turn_on
 
 
 def turn_off_view(request, device_id):

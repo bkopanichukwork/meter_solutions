@@ -44,3 +44,6 @@ class MqttClient:
 
     def publish(self, topic, message):
         self._connector.publish(topic, message)
+
+    def make_subscriptions(self):
+        pass

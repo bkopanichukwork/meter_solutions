@@ -17,6 +17,11 @@ class BaseDataHandler:
 
 class Zmai90DataHandler(BaseDataHandler):
 
+    topics = [
+        "/tele/RESULT",
+        "/stat/POWER"
+    ]
+
     def _decode_to_json(self, topic, message):
         topic_params = topic.split('/')
         device_model = topic_params[0].split('_')[0]

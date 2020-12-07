@@ -169,3 +169,32 @@ def device_status_to_database(status, device_mqtt_id):
 
     db_engine.dispose()
     logger.info("Database connection closed.")
+
+
+def get_mqtt_ids_list():
+    """
+        This function returns list of mqtt_id of all devices
+
+            Returns - list of mqtt_ids
+    """
+
+    if not settings.DATABASE_URL:
+        settings.DATABASE_URL = os.getenv("DATABASE_URL")
+
+    db_engine = create_engine(settings.DATABASE_URL)
+
+    meta = MetaData(db_engine)
+
+    with db_engine.connect() as con:
+        logger.info("Database connection established.")
+
+        devices = Table(settings.DEVICES_TABLE, meta, autoload=True)
+        device_mqtt_ids = con.execute(select([devices.c.mqtt_id]))
+
+        device_mqtt_ids_list = list(device_mqtt_ids)
+        device_mqtt_ids_list = [el[0] for el in device_mqtt_ids_list]
+
+    db_engine.dispose()
+    logger.info("Database connection closed.")
+
+    return device_mqtt_ids_list

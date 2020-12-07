@@ -19,7 +19,7 @@ class DBEngineTest(unittest.TestCase):
                       '"reactivePower": 0.0, ' \
                       '"apparentPower": 0.0, ' \
                       '"powerFactor": 100.0}'
-        save_to_database(indications, "GJVSD123HDS32")
+        save_to_database(indications, "zmai90_5002915A1C05")
 
         self.assertEqual(True, True)
 

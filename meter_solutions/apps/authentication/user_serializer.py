@@ -31,6 +31,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         print(validated_data)
         return User.objects.create_user(**validated_data)
 
+
 class LoginSerializer(serializers.Serializer):
     """
     Authenticates an existing user.

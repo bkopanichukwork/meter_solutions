@@ -9,6 +9,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.core import validators
 from django.db import models
 
+from apps.authentication.managers import UserManager
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
@@ -28,6 +30,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
 
     is_staff = models.BooleanField()
+
+    objects = UserManager()
 
     USERNAME_FIELD = 'email'
 

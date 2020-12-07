@@ -15,7 +15,7 @@ class DeviceGroup(models.Model):
     """
     name = models.CharField(max_length=255)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    devices = models.ManyToManyField(Device)
+    devices = models.ManyToManyField(Device, blank=True)
 
     def __str__(self):
         return f'{self.name}'

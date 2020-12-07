@@ -9,4 +9,4 @@ class DeviceGroupSerializer(ModelSerializer):
 
     class Meta:
         model = DeviceGroup
-        fields = ['name', 'devices']
+        fields = ['name', 'owner', 'devices']

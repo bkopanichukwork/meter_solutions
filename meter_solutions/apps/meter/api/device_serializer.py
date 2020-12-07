@@ -9,4 +9,4 @@ class DeviceSerializer(ModelSerializer):
 
     class Meta:
         model = Device
-        fields = ['name', 'status', 'last_update', 'mqtt_id', 'device_model']
+        fields = ['name', 'owner', 'status', 'last_update', 'mqtt_id', 'device_model']

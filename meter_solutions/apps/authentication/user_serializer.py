@@ -4,6 +4,26 @@ from rest_framework.serializers import ModelSerializer
 
 from apps.authentication.models import User
 
+class UserSerializer(ModelSerializer):
+    email = serializers.EmailField(write_only=True)
+
+
+    # Ignore these fields if they are included in the request.
+    password = serializers.CharField(max_length=128, read_only=True)
+    username = serializers.CharField(max_length=255, read_only=True)
+    token = serializers.CharField(max_length=255, read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'password', 'token',)
+
+    def get_user(self, data):
+        mail = data.get('email', None)
+        user = User.objects.filter(email=mail).last()
+        return {
+            'user': user,
+        }
+
 
 class RegistrationSerializer(serializers.ModelSerializer):
     """
@@ -30,6 +50,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         print(validated_data)
         return User.objects.create_user(**validated_data)
+
 
 class LoginSerializer(serializers.Serializer):
     """

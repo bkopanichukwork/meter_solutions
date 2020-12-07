@@ -27,7 +27,7 @@ class Device(models.Model):
     name = models.CharField(max_length=255)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.PositiveSmallIntegerField(choices=DEVICE_STATUS, default=DEVICE_UNDEFINED)
-    device_model = models.ForeignKey(DeviceModel, on_delete=models.CASCADE)
+    device_model = models.ForeignKey(DeviceModel, on_delete=models.SET_NULL, null=True)
     last_update = models.DateTimeField(auto_now_add=True)
     mqtt_id = models.CharField(max_length=255)
 

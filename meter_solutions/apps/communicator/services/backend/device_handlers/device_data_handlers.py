@@ -75,6 +75,8 @@ class Zmai90DataHandler(BaseDataHandler):
         logger.info(f"Message topic - {message.topic}")
         logger.info(f"Message payload - {message.payload}")
 
+        device_id = message.topic.split('/')[0]
+
         msg = message.payload.decode("utf-8")
         msg = json.loads(msg)
         indications_encoded = msg['SerialReceived']
@@ -84,4 +86,4 @@ class Zmai90DataHandler(BaseDataHandler):
 
         logger.success(indications_decoded)
 
-        json_to_database(indications_decoded, "GJVSD123HDS32")
+        json_to_database(indications_decoded, device_id)

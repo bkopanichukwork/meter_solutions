@@ -5,7 +5,7 @@ from apps.meter.models.device_group import DeviceGroup
 
 
 class DeviceGroupSerializer(ModelSerializer):
-    devices = DeviceSerializer(many=True, read_only=True)
+    devices = DeviceSerializer(many=True, read_only=False)
 
     class Meta:
         model = DeviceGroup

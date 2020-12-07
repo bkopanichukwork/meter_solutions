@@ -12,7 +12,9 @@ def init_receiver():
 
     meter_id = "zmai90_5002915A1C05"
     DeviceHandler = handlers.get_device_data_handler("zmai90")
-    client.subscribe("zmai90_5002915A1C05/tele/RESULT", DeviceHandler.on_message)
+    client.subscribe(meter_id+"/tele/RESULT", DeviceHandler.on_message)
+    client.subscribe(meter_id+"/stat/POWER", DeviceHandler.on_message)
+
     client.start_loop()
 
 

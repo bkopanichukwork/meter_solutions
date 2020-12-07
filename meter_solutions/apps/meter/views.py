@@ -1,7 +1,6 @@
 import json
 
 from django.core import serializers
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -9,11 +8,13 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from apps.meter.api.data_serializer import DataSerializer
+from apps.meter.api.device_group_serializer import DeviceGroupSerializer
 from apps.meter.api.device_model_serializer import DeviceModelSerializer, DeviceTypeSerializer
 from apps.meter.api.device_serializer import DeviceSerializer
 from apps.meter.api.indication_serializer import IndicationSerializer
 from apps.meter.models import Data, DeviceModel, DeviceType, Indication
 from apps.meter.models.device import Device
+from apps.meter.models.device_group import DeviceGroup
 
 
 class DeviceViewSet(ModelViewSet):
@@ -49,6 +50,7 @@ class DataViewSet(ModelViewSet):
     queryset = Data.objects.all()
     serializer_class = DataSerializer
 
+
 class DeviceModelViewSet(ModelViewSet):
     queryset = DeviceModel.objects.all()
     serializer_class = DeviceModelSerializer
@@ -62,3 +64,8 @@ class DeviceTypeViewSet(ModelViewSet):
 class IndicationViewSet(ModelViewSet):
     queryset = Indication.objects.all()
     serializer_class = IndicationSerializer
+
+
+class DeviceGroupViewSet(ModelViewSet):
+    queryset = DeviceGroup.objects.all()
+    serializer_class = DeviceGroupSerializer

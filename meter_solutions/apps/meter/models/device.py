@@ -17,7 +17,7 @@ class Device(models.Model):
         Describes a device and all info about it.
 
         name - name of device that specified by owner
-        owner - user that is owner of device
+        owner - user that is owner of the device
         status - device status (on / off / undefined)
         device_model - device model
         last_update - timestamp of the last communication with device

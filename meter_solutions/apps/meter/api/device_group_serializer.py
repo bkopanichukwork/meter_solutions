@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAdminUser
 from rest_framework.serializers import ModelSerializer
 
 from apps.meter.api.device_serializer import DeviceSerializer

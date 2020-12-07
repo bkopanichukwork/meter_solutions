@@ -7,7 +7,7 @@ from apps.meter.models.device import Device
 
 class DeviceSerializer(ModelSerializer):
     device_model = DeviceModelSerializer(many=False, read_only=True)
-    permission_classes = [IsOwner]
+    permission_classes = [IsOwner, IsAdminUser]
 
     class Meta:
         model = Device

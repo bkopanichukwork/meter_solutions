@@ -8,7 +8,7 @@ from apps.meter.models.device_group import DeviceGroup
 class DeviceGroupListSerializer(ModelSerializer):
     devices = DeviceSerializer(many=True, read_only=True)
 
-    permission_classes = [IsOwner]
+    permission_classes = [IsOwner, IsAdminUser]
 
     read_only_fields = ['id']
 
@@ -20,7 +20,7 @@ class DeviceGroupListSerializer(ModelSerializer):
 class DeviceGroupUpdateSerializer(ModelSerializer):
     read_only_fields = ['id']
 
-    permission_classes = [IsOwner]
+    permission_classes = [IsOwner, IsAdminUser]
 
     class Meta:
         model = DeviceGroup

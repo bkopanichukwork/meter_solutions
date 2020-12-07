@@ -1,12 +1,7 @@
 import json
 
-from django.core import serializers
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status, filters
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from apps.meter.api.data_serializer import DataSerializer
@@ -73,7 +68,11 @@ class IndicationViewSet(ModelViewSet):
 
 
 class DeviceGroupViewSet(ModelViewSet):
-    queryset = DeviceGroup.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = DeviceGroup.objects.filter(owner=user)
+        return queryset
 
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':

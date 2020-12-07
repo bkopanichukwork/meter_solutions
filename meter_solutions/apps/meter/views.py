@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from apps.meter.api.data_serializer import DataSerializer
-from apps.meter.api.device_group_serializer import DeviceGroupSerializer
+from apps.meter.api.device_group_serializer import DeviceGroupListSerializer, DeviceGroupUpdateSerializer
 from apps.meter.api.device_model_serializer import DeviceModelSerializer, DeviceTypeSerializer
 from apps.meter.api.device_serializer import DeviceSerializer
 from apps.meter.api.indication_serializer import IndicationSerializer
@@ -68,4 +68,9 @@ class IndicationViewSet(ModelViewSet):
 
 class DeviceGroupViewSet(ModelViewSet):
     queryset = DeviceGroup.objects.all()
-    serializer_class = DeviceGroupSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            return DeviceGroupListSerializer
+        else:
+            return DeviceGroupUpdateSerializer

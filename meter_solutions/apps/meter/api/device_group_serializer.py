@@ -28,9 +28,7 @@ class DeviceGroupUpdateSerializer(ModelSerializer):
         fields = ['id', 'name', 'devices']
 
     def create(self, validated_data):
-        devices = None
-        if validated_data['devices']:
-            devices = validated_data.pop('devices')
+        devices = validated_data.get('devices', None)
 
         album = DeviceGroup.objects.create(**validated_data)
 

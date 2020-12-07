@@ -7,7 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 from apps.meter.api.data_serializer import DataSerializer
 from apps.meter.api.device_group_serializer import DeviceGroupListSerializer, DeviceGroupUpdateSerializer
 from apps.meter.api.device_model_serializer import DeviceModelSerializer, DeviceTypeSerializer
-from apps.meter.api.device_serializer import DeviceSerializer
+from apps.meter.api.device_serializer import DeviceUpdateSerializer, DeviceListSerializer
 from apps.meter.api.indication_serializer import IndicationSerializer
 from apps.meter.models import Data, DeviceModel, DeviceType, Indication
 from apps.meter.models.device import Device
@@ -15,7 +15,12 @@ from apps.meter.models.device_group import DeviceGroup
 
 
 class DeviceViewSet(ModelViewSet):
-    serializer_class = DeviceSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            return DeviceListSerializer
+        else:
+            return DeviceUpdateSerializer
 
     def get_queryset(self):
         user = self.request.user

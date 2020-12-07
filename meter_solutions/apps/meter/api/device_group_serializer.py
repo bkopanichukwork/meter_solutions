@@ -1,13 +1,13 @@
 from rest_framework.permissions import IsAdminUser
 from rest_framework.serializers import ModelSerializer
 
-from apps.meter.api.device_serializer import DeviceSerializer
+from apps.meter.api.device_serializer import DeviceListSerializer
 from apps.meter.api.permissions import IsOwner
 from apps.meter.models.device_group import DeviceGroup
 
 
 class DeviceGroupListSerializer(ModelSerializer):
-    devices = DeviceSerializer(many=True, read_only=True)
+    devices = DeviceListSerializer(many=True, read_only=True)
 
     permission_classes = [IsOwner, IsAdminUser]
 
@@ -19,6 +19,7 @@ class DeviceGroupListSerializer(ModelSerializer):
 
 
 class DeviceGroupUpdateSerializer(ModelSerializer):
+    #TODO add only devices that have the same owner as a group owner
     read_only_fields = ['id']
 
     permission_classes = [IsOwner, IsAdminUser]

@@ -31,10 +31,10 @@ class DeviceGroupUpdateSerializer(ModelSerializer):
     def create(self, validated_data):
         devices = validated_data.get('devices', None)
 
-        album = DeviceGroup.objects.create(**validated_data, owner=self.context['request'].user)
+        device_group = DeviceGroup.objects.create(**validated_data, owner=self.context['request'].user)
 
         if devices:
             for device in devices:
-                album.devices.add(device)
+                device_group.devices.add(device)
 
-        return album
+        return device_group

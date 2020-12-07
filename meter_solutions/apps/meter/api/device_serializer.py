@@ -36,3 +36,7 @@ class DeviceUpdateSerializer(ModelSerializer):
     def perform_create(self, serializer):
         self.validated_data['owner'] = self.request.user
         serializer.save()
+
+    def create(self, validated_data):
+        device = Device.objects.create(**validated_data, owner=self.context['request'].user)
+        return device

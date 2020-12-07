@@ -20,8 +20,12 @@ from apps.meter.models.device_group import DeviceGroup
 
 
 class DeviceViewSet(ModelViewSet):
-    queryset = Device.objects.all()
     serializer_class = DeviceSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Device.objects.filter(owner=user)
+        return queryset
 
     @action(detail=True, methods=['get'])
     def get_latest_data(self, request, pk=None):

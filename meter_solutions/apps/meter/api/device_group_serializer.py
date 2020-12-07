@@ -30,14 +30,10 @@ class DeviceGroupUpdateSerializer(ModelSerializer):
     def create(self, validated_data):
         devices = validated_data.get('devices', None)
 
-        album = DeviceGroup.objects.create(**validated_data)
+        album = DeviceGroup.objects.create(**validated_data, owner=self.context['request'].user)
 
         if devices:
             for device in devices:
                 album.devices.add(device)
 
         return album
-
-    def perform_create(self, serializer):
-        self.validated_data['owner'] = self.request.user
-        serializer.save()

@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_framework.permissions import IsAdminUser
 from rest_framework.serializers import ModelSerializer
 
@@ -38,3 +39,14 @@ class DeviceGroupUpdateSerializer(ModelSerializer):
                 device_group.devices.add(device)
 
         return device_group
+
+
+class DeviceGroupAddDeviceSerializer(ModelSerializer):
+    devices = serializers.ListField
+
+    permission_classes = [IsOwner]
+
+    class Meta:
+        model = DeviceGroup
+        fields = ['devices']
+

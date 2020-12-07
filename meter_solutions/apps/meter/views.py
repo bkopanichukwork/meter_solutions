@@ -1,11 +1,13 @@
 import json
 
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from apps.meter.api.data_serializer import DataSerializer
-from apps.meter.api.device_group_serializer import DeviceGroupListSerializer, DeviceGroupUpdateSerializer
+from apps.meter.api.device_group_serializer import DeviceGroupListSerializer, DeviceGroupUpdateSerializer, \
+    DeviceGroupAddDeviceSerializer
 from apps.meter.api.device_model_serializer import DeviceModelSerializer, DeviceTypeSerializer
 from apps.meter.api.device_serializer import DeviceUpdateSerializer, DeviceListSerializer
 from apps.meter.api.indication_serializer import IndicationSerializer
@@ -29,7 +31,8 @@ class DeviceViewSet(ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def get_latest_data(self, request, pk=None):
-        device = Device.objects.filter(id=pk).last()
+        device = self.get_object()
+
         indications = DeviceModel.objects.filter(id=device.device_model_id).last().indications.all()
         result = []
         for indication in indications:
@@ -41,7 +44,8 @@ class DeviceViewSet(ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def get_data_by_date(self, request, pk=None):
-        device = Device.objects.filter(id=pk).last()
+        device = self.get_object()
+
         indication = Indication.objects.filter(measurement=request.GET['measurement']).last()
         result = []
         start_date = request.GET['start-date'].replace('T', ' ')
@@ -84,3 +88,17 @@ class DeviceGroupViewSet(ModelViewSet):
             return DeviceGroupListSerializer
         else:
             return DeviceGroupUpdateSerializer
+
+    @action(detail=True, methods=['post'])
+    def add_device(self, request, pk=None):
+        device_group = self.get_object()
+
+        serializer = DeviceGroupAddDeviceSerializer(data=request.data)
+
+        if serializer.is_valid():
+            device_group.add_devices(serializer.data['devices'])
+            device_group.save()
+            return Response({'status': 'devices added to the group'})
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)

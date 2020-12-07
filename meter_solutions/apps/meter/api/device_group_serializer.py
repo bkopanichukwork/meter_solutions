@@ -7,16 +7,20 @@ from apps.meter.models.device_group import DeviceGroup
 class DeviceGroupListSerializer(ModelSerializer):
     devices = DeviceSerializer(many=True, read_only=True)
 
+    read_only_fields = ['id']
+
     class Meta:
         model = DeviceGroup
-        fields = ['name', 'owner', 'devices']
+        fields = ['id', 'name', 'owner', 'devices']
+
 
 
 class DeviceGroupUpdateSerializer(ModelSerializer):
+    read_only_fields = ['id']
 
     class Meta:
         model = DeviceGroup
-        fields = ['name', 'owner', 'devices']
+        fields = ['id', 'name', 'owner', 'devices']
 
     def create(self, validated_data):
         devices = validated_data.pop('devices')

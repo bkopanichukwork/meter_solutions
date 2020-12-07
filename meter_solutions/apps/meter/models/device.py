@@ -1,5 +1,6 @@
 from django.db import models
 
+from apps.authentication.models import User
 from apps.meter.models.device_model import DeviceModel
 
 DEVICE_ON = 1
@@ -24,7 +25,7 @@ class Device(models.Model):
         mqtt_id - id that is using for device connection with mqtt broker
     """
     name = models.CharField(max_length=255)
-    #owner = models.ForeignKey(on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.PositiveSmallIntegerField(choices=DEVICE_STATUS, default=DEVICE_UNDEFINED)
     device_model = models.ForeignKey(DeviceModel, on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now_add=True)

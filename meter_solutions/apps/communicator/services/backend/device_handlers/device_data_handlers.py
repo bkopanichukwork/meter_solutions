@@ -5,7 +5,7 @@ from abc import abstractmethod
 from loguru import logger
 from sqlalchemy import create_engine, Table, select, MetaData
 
-from apps.communicator.services.backend.db_engine import json_to_database
+from apps.communicator.services.backend.db_engine import json_to_database, device_status_to_database
 
 
 class BaseDataHandler:
@@ -16,6 +16,11 @@ class BaseDataHandler:
 
 
 class Zmai90DataHandler(BaseDataHandler):
+
+    topics = [
+        "/tele/RESULT",
+        "/stat/POWER"
+    ]
 
     def _decode_to_json(self, topic, message):
         topic_params = topic.split('/')
@@ -76,9 +81,20 @@ class Zmai90DataHandler(BaseDataHandler):
         logger.info(f"Message payload - {message.payload}")
 
         device_id = message.topic.split('/')[0]
+        command = "/".join(message.topic.split('/')[1:])
 
         msg = message.payload.decode("utf-8")
+
+        if command == 'tele/RESULT':
+            pass
+            Zmai90DataHandler.on_data_message(client, userdata, msg, device_id)
+        elif command == 'stat/POWER':
+            Zmai90DataHandler.on_power_message(client, userdata, msg, device_id)
+
+    @staticmethod
+    def on_data_message(client, userdata, msg, device_id):
         msg = json.loads(msg)
+
         indications_encoded = msg['SerialReceived']
 
         handler = Zmai90DataHandler()
@@ -87,3 +103,7 @@ class Zmai90DataHandler(BaseDataHandler):
         logger.success(indications_decoded)
 
         json_to_database(indications_decoded, device_id)
+
+    @staticmethod
+    def on_power_message(client, userdata, status, device_id):
+        device_status_to_database(status, device_id)
